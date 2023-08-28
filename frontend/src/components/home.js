@@ -1,32 +1,40 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './header';
 
-const Home = () => {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+const UserCard = ({ user }) => {
+  return (
+    <div className="card" style={{ width: "18rem" }}>
+      <div className="card-body">
+        <h2 className="card-title">{user.firstName}</h2>
+        <h6 className="card-title">{user.age}</h6>
+        <p className="card-text">
+          Some quick example text to build on the card title and make up the bulk of the card's content.
+        </p>
+        <a href="#" className="btn btn-primary">
+          Go somewhere
+        </a>
+      </div>
+    </div>
+  );
+};
 
-    if (!token && window.location.pathname !== "/") {
-      window.location.href = "/";
-    }
-  }, []);
+const Home = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const user = location.state && location.state.loguser;
-  console.log(user)
+  const { loguser } = location.state || {}; // Destructuring with default value
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token && location.pathname !== '/') {
+      navigate('/');
+    }
+  }, [navigate, location]);
 
   return (
     <div>
       <Header />
-      <div className="card" style={{width:"18rem"}}>
-
-  <div class="card-body">
-    <h2 class="card-title">{user.firstName}</h2>
-    <h6 class="card-title">{user.age}</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
+      {loguser && <UserCard user={loguser} />}
     </div>
   );
 };
