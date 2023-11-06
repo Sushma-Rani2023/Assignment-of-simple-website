@@ -5,6 +5,7 @@ import axios from "../axios";
 const Register = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const [display, setDisplay] = useState(false);
 
   const handleform = async (e) => {
     e.preventDefault();
@@ -13,8 +14,8 @@ const Register = () => {
       await axios
         .post("user/register/", user)
         .then(() => {
-          alert("succesfully Registered")
-           navigate("/login");
+          alert("succesfully Registered");
+          navigate("/login");
         })
         .catch((err) => console.log("invalid", err));
     } else {
@@ -30,8 +31,6 @@ const Register = () => {
     });
   };
   const isStrongPassword = (password) => {
-    // Add your strong password validation logic here
-    // Example: Require at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character
     const strongPasswordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return strongPasswordRegex.test(password);
@@ -74,7 +73,7 @@ const Register = () => {
               <label htmlFor="lastname">Age</label>
               <input
                 type="text"
-                placeholder="Your Last Name"
+                placeholder="Your Age"
                 className="form-control username"
                 id="lastname"
                 name="age"
@@ -145,6 +144,15 @@ const Register = () => {
               Already Registerd? <a href="/login">Login</a>
             </p>
           </form>
+          <button
+            onClick={() => {
+              setDisplay(!display);
+              console.log("Sushma");
+            }}
+          >
+            Hello
+          </button>
+          {display && <div>HEllo world</div>}
         </div>
       </div>
     </div>
